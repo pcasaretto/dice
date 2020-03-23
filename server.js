@@ -4,6 +4,8 @@ const http = require("http");
 const fs = require('fs');
 const index = fs.readFileSync('index.html');
 
+const port = process.env.PORT || 80
+
 const PROTOCOL_NAME = "dice"
 
 const server = http.createServer((req, res) => {
@@ -62,6 +64,6 @@ wsServer.on("request", req => {
   });
 });
 
-server.listen(8080, () => {
-  console.log((new Date()) + " Server is listening on port 8080");
+server.listen(port, () => {
+  console.log((new Date()) + " Server is listening on port " + port);
 });
