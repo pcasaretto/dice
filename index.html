@@ -2,15 +2,22 @@
 <script>
   const button = document.getElementById('roll');
 button.addEventListener('click', () => {
-    webSocket.send(JSON.stringify({event: 'dice/roll', payload: { diceValue: '20' }}));
+  webSocket.send(JSON.stringify({event: 'dice/roll', payload: { diceValue: '20' }}));
 })
-  const webSocket = new WebSocket('ws://', ['dice']);
-  webSocket.onmessage = function (message) {
-    console.log(message);
-    const { event, payload } = JSON.parse(message.data);
-    alert(payload.value);
-  }
-  webSocket.onopen = event => {
-    button.disabled = false;
-  }
+var loc = window.location, new_uri;
+if (loc.protocol === "https:") {
+  new_uri = "wss:";
+} else {
+  new_uri = "ws:";
+}
+new_uri += "//" + loc.host;
+const webSocket = new WebSocket(new_uri, ['dice']);
+webSocket.onmessage = function (message) {
+  console.log(message);
+  const { event, payload } = JSON.parse(message.data);
+  alert(payload.value);
+}
+webSocket.onopen = event => {
+  button.disabled = false;
+}
 </script>
