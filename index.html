@@ -1,0 +1,16 @@
+<button type="button" id="roll" disabled>Roll d20</button>
+<script>
+  const button = document.getElementById('roll');
+button.addEventListener('click', () => {
+    webSocket.send(JSON.stringify({event: 'dice/roll', payload: { diceValue: '20' }}));
+})
+  const webSocket = new WebSocket('ws://localhost:8080', ['dice']);
+  webSocket.onmessage = function (message) {
+    console.log(message);
+    const { event, payload } = JSON.parse(message.data);
+    alert(payload.value);
+  }
+  webSocket.onopen = event => {
+    button.disabled = false;
+  }
+</script>
